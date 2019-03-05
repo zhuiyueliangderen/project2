@@ -3,12 +3,13 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-//1.引入mint-ui样式文件
+// 1.引入mint-ui样式文件
 import 'mint-ui/lib/style.css'
-Vue.config.productionTip = false
-//2.引入mui库样式文件
+// 2.引入mui库样式文件
 import './lib/mui/css/mui.css'
 import './lib/mui/css/icons-extra.css'
+Vue.config.productionTip = false
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
