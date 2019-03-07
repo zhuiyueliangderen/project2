@@ -38,7 +38,10 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
- .mui-bar-tab .mui-tab-item-tao.mui-active {
+/* #app .mui-bar .mui-bar-tab{
+   z-index: 100;
+}*/
+.mui-bar-tab .mui-tab-item-tao.mui-active {
     color: #007aff;
  }
 .mui-bar-tab .mui-tab-item-tao {
