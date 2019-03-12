@@ -3,7 +3,7 @@
     <!--占位符用来显示其他组件-->
     <router-view/>
     <!--添加公共组件tabbar-->
-    <nav class="mui-bar mui-bar-tab">
+    <nav class="mui-bar mui-bar-tab" v-if="footerShow">
       <a class="mui-tab-item mui-active" href="#tabbar">
         <span class="mui-icon mui-icon-home"></span>
         <span class="mui-tab-label">首页</span>
@@ -25,7 +25,24 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  data () {
+    return {
+      footerShow: true
+    }
+  },
+  watch: {
+    $route(to,from) {
+      if (this.$route.path === '/Login' || '/Register' || '/Detail') {
+        this.footerShow = false;
+      } else {
+        this.footerShow = true;
+      }
+      if (this.$route.path === '/' || this.$route.path === '/Home') {
+        this.footerShow = true;
+      }
+    }
+  }
 }
 </script>
 
@@ -34,9 +51,12 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 /* #app .mui-bar .mui-bar-tab{
    z-index: 100;

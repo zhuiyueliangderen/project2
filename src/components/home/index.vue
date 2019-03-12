@@ -3,7 +3,9 @@
     <header class="index-header">
       <h4 class="top-text">一小时达</h4>
       <div class="tap-menu">
-        <span class="nav-left" @click="btn_left"></span>
+        <span class="nav-left" @click="btn_left">
+          <a><span class="mui-icon mui-icon-arrowleft"></span></a>
+        </span>
         <ul class="nav-wrap" :style="{ marginLeft: marginLeft + 'px'}" @click="nav_show">
           <li class="nav_show">全部</li>
           <li>水果</li>
@@ -14,50 +16,53 @@
           <li>乳品</li>
           <li>零食</li>
         </ul>
-        <span class="nav-right" @click="btn_right">></span>
+        <span class="nav-right" @click="btn_right">
+          <a><span class="mui-icon mui-icon-arrowright"></span></a>
+        </span>
       </div>
     </header>
     <ul class="index-main">
-      <li class="main-item">
+      <li class="main-item" v-for="(tmp,index) in myList2" :key="index">
         <div class="item-container">
           <div class="item-left">
-            <img src="../../../static/img/apple.png" />
+            <img :src="'/static/' + tmp.pic_href">
           </div>
           <div class="item-right">
             <div class="item-text">
-              <h3>这是水果1</h3>
+              <h3>{{tmp.pname}}</h3>
               <p>这是水果介绍</p>
               <div>
                 &yen;
-                <span>18</span>
+                <span>{{tmp.price}}</span>
               </div>
             </div>
-            <div class="cart-btn">
-              <button class="el-button" v-if="clickShow==true" @click="handleShow">
-                <a><span class="mui-icon-extra mui-icon-extra-cart"></span></a>
-              </button>
-              <div class="my-input-number" v-if="clickShow==false">
-                <a id="icon-minus" @click="minusCount"><span class="mui-icon mui-icon-minus"></span></a>
-                <span class="inputText" v-text="count">{{count}}</span>
-                <a id="icon-plus" @click="addCount"><span class="mui-icon mui-icon-plus"></span></a>
-              </div>
-            </div>
+            <btn-box></btn-box>
           </div>
         </div>
       </li>
     </ul>
+    <p>没有更多商品了，敬请期待！</p>
   </div>
 </template>
 
 <script>
+// 注册子组件右侧button部分
+import btn from './indexBtn.vue'
 export default {
   data () {
     return {
       moved: 0,
       marginLeft: -27,
-      clickShow: true,
-      count: 1
+      myList: [],
+      myList2: [],
+      type: ''
     }
+  },
+  components: {
+    'btn-box': btn
+  },
+  created () {
+    this.getproList()
   },
   methods: {
     btn_left () {
@@ -76,29 +81,29 @@ export default {
       }
       this.marginLeft = -70 * this.moved - 27
     },
+    getproList () {
+      var url = 'http://127.0.0.1:3000/product_list'
+      this.axios.get(url).then((result) => {
+        this.myList = result.data.result
+        this.myList2 = this.myList
+      })
+    },
     nav_show (e) {
       var lis = e.target.parentElement.children
       for (var li of lis) {
         li.className = ''
       }
       e.target.className = 'nav_show'
-    },
-    handleShow () {
-      if (this.clickShow === true) {
-        this.clickShow = false
+      this.type = e.target.innerHTML
+      if (this.type === '全部') {
+        this.myList2 = this.myList
       } else {
-        this.clickShow = true
-      }
-    },
-    addCount () {
-      this.count++
-      console.log(this.count)
-    },
-    minusCount () {
-      if (this.count > 1) {
-        this.count--
-      } else {
-        this.count = 1
+        this.myList2 = []
+        for (var item of this.myList) {
+          if (this.type === item.type) {
+            this.myList2.push(item)
+          }
+        }
       }
     }
   }
@@ -109,8 +114,8 @@ export default {
 <style scoped>
   .app-index{
     position: relative;
-    top: -60px;
     left:0;
+    min-height: 1945px;
   }
   .index-header{
     position: fixed;
@@ -118,7 +123,8 @@ export default {
     top: 0;
     width: 100%;
     background-color: #fff;
-    z-index: 100
+    z-index: 100;
+    min-height: 94px
   }
   .index-header .top-text{
     height: 45px;
@@ -145,10 +151,14 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
-    background: #ffa;
+    background: #f5f7fa;
+  }
+  .index-header .tap-menu .nav-left a span.mui-icon,.index-header .tap-menu .nav-right a span.mui-icon{
+    width: 10px;
+    margin-left:-15px;
   }
   .index-header .tap-menu .nav-right{
-    left: 363px;
+    left: 348px;
   }
   .index-header .tap-menu .nav-wrap{
     width: 600px;
@@ -182,12 +192,14 @@ export default {
   }
   .index-main{
     width: 100%;
+    min-height: 1900px;
     overflow-x: hidden;
     list-style: none;
     padding: 0;
     margin: 0;
     position: relative;
     top: 95px;
+    overflow-y: scroll;
   }
   .index-main .main-item{
     width: 100%;
@@ -235,36 +247,11 @@ export default {
     color: #409eff;
     font-weight: 600;
   }
-  .index-main .main-item .item-container .item-right .cart-btn{
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-  }
-  .index-main .main-item .item-container .item-right .cart-btn .el-button{
-    width: 55px;
-    height: 55px;
-    background-color: #94c1ef;
-    border-color: #94c1ef;
-    border-radius: 50%;
-    padding: 12px;
-  }
-  .index-main .main-item .item-container .item-right .cart-btn .my-input-number{
-    position: absolute;
-    width: 60px;
-    bottom: 13px;
-    right: 4px;
-  }
-  .index-main .main-item .item-container .item-right .cart-btn .my-input-number a>span{
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-  }
-  .index-main .main-item .item-container .item-right .cart-btn .my-input-number .inputText{
-    display: inline-block;
-    width: 7px;
-    height: 14px;
+  .app-index>p{
+    margin: 0 auto;
     text-align: center;
-    line-height: 14px;
-    margin-left: 5px;
+    position: absolute;
+    left: 30%;
+    bottom: 0;
   }
 </style>
