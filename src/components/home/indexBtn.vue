@@ -18,7 +18,8 @@ export default {
     data () {
         return {
             clickShow: true,
-            count: 1
+            count: 1,
+            props:[]
         }
     },
     methods: {

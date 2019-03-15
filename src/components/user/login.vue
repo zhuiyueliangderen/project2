@@ -11,18 +11,18 @@
                 <form class="el-form">
                     <div class="el-form-item">
                         <span>用户名：</span>
-                        <input type="text" placeholder="请输入3-12位字符">
+                        <input type="text" v-model="uname" placeholder="请输入3-12位字符">
                     </div>
                     <div class="el-form-item">
                         <span>密码：</span>
-                        <input type="password" placeholder="请输入6位字符">
+                        <input type="password" v-model="upwd" placeholder="请输入6位字符">
                     </div>
                     <div class="el-form-item">
                         <span class="account">没有账号？</span>
-                        <a>立即注册</a>
+                        <router-link to="/Register">立即注册</router-link>
                     </div>
                     <div class="el-form-item">
-                        <button>登录</button>
+                        <button @click="Login">登录</button>
                     </div>
                 </form>
             </div>
@@ -30,7 +30,42 @@
     </div>
 </template>
 <script>
+import {Toast} from 'mint-ui';
 export default {
+    data(){
+        return {
+            uname:"",
+            upwd:""
+        }
+    },
+    methods:{
+        Login(){
+            //1.获取用户输入的用户名和密码
+            var uname = this.uname;
+            var upwd = this.upwd;
+            console.log(uname);
+            console.log(upwd);
+            //2.验证不能为空
+            var reg=/^[a-z0-9]{3,12}$/i;
+            if(!reg.test(uname)){
+                Toast("用户名格式不正确，请检查");
+                return;
+            }
+            //3.发送ajax请求
+            var url="http://127.0.0.1:3000/login?uname="+uname+"&upwd="+upwd;
+            this.axios.get(url).then((result)=>{
+                var data=result.data.code;
+                if(data==1){
+                    Toast("登录成功！");
+                    this.$router.push('/Home');
+                }
+                if(data==-1){
+                    Toast("用户名或密码错误！");
+                }
+                //console.log(result.data);
+            })
+        }
+    }
 }
 </script>
 <style>

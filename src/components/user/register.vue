@@ -27,7 +27,7 @@
                     </div>
                     <div class="el-form-item">
                         <span class="account">已有账号？</span>
-                        <a>立即登录</a>
+                        <router-link to="/Login">立即登录</router-link>
                     </div>
                     <div class="el-form-item">
                         <button>注册</button>

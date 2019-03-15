@@ -15,10 +15,10 @@
         </span>
         <span class="mui-tab-label">购物车</span>
       </a>
-      <a class="mui-tab-item" href="#tabbar-with-map">
+      <router-link to="/Login" class="mui-tab-item" href="#tabbar-with-map">
         <span class="mui-icon mui-icon-contact"></span>
         <span class="mui-tab-label">我的</span>
-      </a>
+      </router-link>
     </nav>
   </div>
 </template>
@@ -83,7 +83,7 @@ export default {
     padding-bottom: 0;
 }
 
-.mui-bar-tab .mui-tab-item-tao .mui-icon~.mui-tab-label {
+.mui-bar-tab .mui-tab-item-tao .mui-icon.mui-tab-label {
    font-size:11px;
    display:block;
    overflow:hidden;
