@@ -25,18 +25,18 @@
       <li class="main-item" v-for="(tmp,index) in myList2" :key="index">
         <div class="item-container">
           <div class="item-left">
-            <img :src="'/static/' + tmp.pic_href">
+            <img :src="'/static/' + tmp.pic_href" ref="pic">
           </div>
           <div class="item-right">
             <div class="item-text">
-              <h3>{{tmp.pname}}</h3>
+              <h3 ref="pname">{{tmp.pname}}</h3>
               <p>这是水果介绍</p>
               <div>
                 &yen;
                 <span>{{tmp.price}}</span>
               </div>
             </div>
-            <btn-box></btn-box>
+            <btn-box :pic_href="pic_href" :pname="pname"></btn-box>
           </div>
         </div>
       </li>
@@ -55,7 +55,9 @@ export default {
       marginLeft: -27,
       myList: [],
       myList2: [],
-      type: ''
+      type: '',
+      pic_href: '',
+      pname: ''
     }
   },
   components: {
@@ -65,6 +67,11 @@ export default {
     this.getproList()
   },
   methods: {
+    watch:{
+      handle(){
+        console.log(this.$refs.pname.innerHTML);
+      }
+    },
     btn_left () {
       if (this.moved > 0) {
         this.moved--
@@ -105,6 +112,7 @@ export default {
           }
         }
       }
+      
     }
   }
 }

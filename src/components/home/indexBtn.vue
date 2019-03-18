@@ -18,10 +18,10 @@ export default {
     data () {
         return {
             clickShow: true,
-            count: 1,
-            props:[]
+            count: 1
         }
     },
+    props:["pic_href","pname"],
     methods: {
         btn_left () {
             if (this.moved > 0) {
@@ -45,6 +45,12 @@ export default {
             } else {
                 this.clickShow = true
             }
+            //console.log(this.pic_href);
+            //console.log(this.pname);
+            /*for(var i=0;i<this.props.length;i++){
+                console.log(props[i]);
+                
+            }*/
         },
         addCount () {
             this.count++
