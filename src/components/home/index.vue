@@ -29,14 +29,14 @@
           </div>
           <div class="item-right">
             <div class="item-text">
-              <h3 ref="pname">{{tmp.pname}}</h3>
+              <h3>{{tmp.pname}}</h3>
               <p>这是水果介绍</p>
               <div>
                 &yen;
                 <span>{{tmp.price}}</span>
               </div>
             </div>
-            <btn-box :pic_href="pic_href" :pname="pname"></btn-box>
+            <btn-box :pname="pname" :index="index" :img_src="img_src" :price="price" :pid="pid"></btn-box>
           </div>
         </div>
       </li>
@@ -56,22 +56,21 @@ export default {
       myList: [],
       myList2: [],
       type: '',
-      pic_href: '',
-      pname: ''
+      /*父组件传递给子组件的值  产品名称，图片地址，价格，产品编号，对应的下标 */
+      pname: [],
+      index: 0,
+      img_src: [],
+      price:[],
+      pid:[]
     }
   },
   components: {
     'btn-box': btn
   },
   created () {
-    this.getproList()
+    this.getproList();
   },
   methods: {
-    watch:{
-      handle(){
-        console.log(this.$refs.pname.innerHTML);
-      }
-    },
     btn_left () {
       if (this.moved > 0) {
         this.moved--
@@ -93,6 +92,12 @@ export default {
       this.axios.get(url).then((result) => {
         this.myList = result.data.result
         this.myList2 = this.myList
+        for(var i=0;i<this.myList2.length;i++){
+          this.pname.push(this.myList2[i].pname);
+          this.img_src.push(this.myList2[i].pic_href);
+          this.price.push(this.myList2[i].price);
+          this.pid.push(this.myList2[i].pid);
+        }
       })
     },
     nav_show (e) {

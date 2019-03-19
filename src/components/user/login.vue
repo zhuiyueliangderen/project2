@@ -39,12 +39,11 @@ export default {
         }
     },
     methods:{
-        Login(){
+        Login(e){
+            e.preventDefault();
             //1.获取用户输入的用户名和密码
             var uname = this.uname;
             var upwd = this.upwd;
-            console.log(uname);
-            console.log(upwd);
             //2.验证不能为空
             var reg=/^[a-z0-9]{3,12}$/i;
             if(!reg.test(uname)){
@@ -54,15 +53,17 @@ export default {
             //3.发送ajax请求
             var url="http://127.0.0.1:3000/login?uname="+uname+"&upwd="+upwd;
             this.axios.get(url).then((result)=>{
-                var data=result.data.code;
-                if(data==1){
+                //console.log(result);
+                var code=result.data.code;
+                var id=result.data.id;
+                if(code==1){
                     Toast("登录成功！");
+                    sessionStorage.setItem("id",id);
                     this.$router.push('/Home');
                 }
-                if(data==-1){
+                if(code==-1){
                     Toast("用户名或密码错误！");
                 }
-                //console.log(result.data);
             })
         }
     }

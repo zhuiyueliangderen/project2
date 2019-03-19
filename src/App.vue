@@ -4,17 +4,17 @@
     <router-view/>
     <!--添加公共组件tabbar-->
     <nav class="mui-bar mui-bar-tab" v-if="footerShow">
-      <a class="mui-tab-item mui-active" href="#tabbar">
+      <router-link to="/Home" class="mui-tab-item mui-active" href="#tabbar">
         <span class="mui-icon mui-icon-home"></span>
         <span class="mui-tab-label">首页</span>
-      </a>
-      <a class="mui-tab-item" href="#tabbar-with-contact">
+      </router-link>
+      <router-link to="/Mycart" class="mui-tab-item" href="#tabbar-with-contact">
         <span class="mui-icon mui-icon-extra mui-icon-extra-cart">
           <span class="mui-badge">0
           </span>
         </span>
         <span class="mui-tab-label">购物车</span>
-      </a>
+      </router-link>
       <router-link to="/Login" class="mui-tab-item" href="#tabbar-with-map">
         <span class="mui-icon mui-icon-contact"></span>
         <span class="mui-tab-label">我的</span>
@@ -33,7 +33,7 @@ export default {
   },
   watch: {
     $route(to,from) {
-      if (this.$route.path === '/Login' || '/Register' || '/Detail') {
+      if (this.$route.path === '/Login' || '/Register') {
         this.footerShow = false;
       } else {
         this.footerShow = true;
@@ -47,6 +47,13 @@ export default {
 </script>
 
 <style>
+body,html{
+  height: 100%;
+}
+html{
+  font-size: 14px;
+  color: #ccc;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

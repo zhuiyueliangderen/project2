@@ -14,14 +14,16 @@
     </div>
 </template>
 <script>
+import {Toast} from 'mint-ui'
 export default {
     data () {
         return {
             clickShow: true,
-            count: 1
+            count: 1,
+            id:0
         }
     },
-    props:["pic_href","pname"],
+    props:["pname","index","img_src","price","pid"],
     methods: {
         btn_left () {
             if (this.moved > 0) {
@@ -39,18 +41,30 @@ export default {
             }
             this.marginLeft = -70 * this.moved - 27
         },
-        handleShow () {
-            if (this.clickShow === true) {
-                this.clickShow = false
-            } else {
-                this.clickShow = true
-            }
-            //console.log(this.pic_href);
-            //console.log(this.pname);
-            /*for(var i=0;i<this.props.length;i++){
-                console.log(props[i]);
-                
-            }*/
+        handleShow (e) {
+            this.id=sessionStorage.getItem("id");
+            if(this.id){
+                var url="http://127.0.0.1:3000/addcart";
+                this.axios.get(url,
+                {
+                    params:{
+                        pid:this.pid[this.index],
+                        pname:this.pname[this.index],
+                        pic_href:this.img_src[this.index],
+                        price:this.price[this.index],
+                        count:1,
+                        uid:this.id
+                    }
+                }).then((result)=>{
+                    this.clickShow = false;
+                    Toast("添加成功！");
+                    return;
+                });
+            }else{
+                Toast("请先登录！");
+                this.clickShow = true;
+                return;
+            }                     
         },
         addCount () {
             this.count++
