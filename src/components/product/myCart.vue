@@ -7,7 +7,7 @@
         <main class="cart-body" v-if="handleShow==true">
             <div class="wrap">
                 <ul class="goods-wrap">
-                    <li class="cartGoodsItem" v-for="tmp of cartList">
+                    <li class="cartGoodsItem" v-for="(tmp,index) in cartList" :key="index">
                         <div class="cart-one-item">
                             <div class="item-left">
                                 <img :src="'/static/'+tmp.pic_href">
@@ -21,13 +21,7 @@
                                         <span>{{tmp.price}}</span>
                                     </div>
                                 </div>
-                                <div class="cart-btn">
-                                    <div class="my-input-number">
-                                        <a id="icon-minus" @click="minusCount"><span class="mui-icon mui-icon-minus"></span></a>
-                                        <span class="inputText">{{count}}</span>
-                                        <a id="icon-plus" @click="addCount"><span class="mui-icon mui-icon-plus"></span></a>
-                                    </div>
-                                </div>
+                                <cartBtn-box :index="index" :countList="countList"></cartBtn-box>
                             </div>
                         </div>
                     </li>
@@ -37,30 +31,23 @@
     </div>
 </template>
 <script>
-
+import cartBtn from './cartBtn.vue'
 export default {
     data () {
         return {
-            count: 1,
             id: 0,
             cartList: [],
-            handleShow: true
+            handleShow: true,
+            countList: []
         }
+    },
+    components:{
+        "cartBtn-box":cartBtn
     },
     created (){
         this.cart_list();
     },
     methods: {
-        addCount () {
-            this.count++
-        },
-        minusCount () {
-            if (this.count > 1) {
-                this.count--
-            } else {
-                this.count = 1
-            }
-        },
         cart_list () {
             //console.log(1111);
             this.id=sessionStorage.getItem("id");
@@ -71,6 +58,17 @@ export default {
                 this.axios.get(url).then((result)=>{
                     this.cartList=result.data.data;
                     console.log(this.cartList);
+                    //接收服务器程序返回数据
+                    var rows=result.data.data;
+                    console.log(rows);
+                    var sum=0;
+                    for(var i=0;i<rows.length;i++){
+                        sum+=rows[i].count;
+                        this.countList.push(rows[i].count);
+                    }
+                    console.log(this.countList);
+                    //修改全局购物车数量
+                    this.$store.commit("updateCount",sum);
                 });
             }else{
                 this.handleShow=false;
@@ -163,11 +161,19 @@ export default {
     .cart-one-item .item-right .item-text span{
         font-size: 18px;
     }
-    .cart-btn .my-input-number{
+    /*.cart-btn .my-input-number{
         position: absolute;
-        width: 60px;
+        width: 65px;
         bottom: 10px;
         right: 10px;
+    }
+    .cart-btn .my-input-number a{
+        display: inline-block;
+        width: 23px;
+        height: 24px;
+    }
+    .cart-btn .my-input-number a#icon-plus{
+        margin-left:-5px;
     }
     .cart-btn .my-input-number a>span{
         display: inline-block;
@@ -176,10 +182,10 @@ export default {
     }
     .cart-btn .my-input-number .inputText{
         display: inline-block;
-        width: 7px;
+        width: 18px;
         height: 14px;
         text-align: center;
         line-height: 14px;
-        margin-left: 5px;
-    } 
+        margin-left: -4px;
+    }*/ 
 </style>

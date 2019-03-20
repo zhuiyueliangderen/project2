@@ -56,8 +56,10 @@ export default {
                         uid:this.id
                     }
                 }).then((result)=>{
+                    console.log(result);
                     this.clickShow = false;
                     Toast("添加成功！");
+                    this.$store.commit('increment',this.count);
                     return;
                 });
             }else{
@@ -67,11 +69,23 @@ export default {
             }                     
         },
         addCount () {
-            this.count++
+            this.count++;
+            //this.$store.commit('increment',this.count);
+            this.handleShow();
         },
         minusCount () {
             if (this.count > 1) {
-                this.count--
+                this.count--;
+                var url="http://127.0.0.1:3000/updateCart";
+                this.axios.get(url,{
+                    params:{
+                        pid:this.pid[this.index],
+                        uid:this.id
+                    }
+                }).then((result)=>{
+                    console.log(result);
+                });
+                //this.handleShow();
             } else {
                 this.count = 1
             }

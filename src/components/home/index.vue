@@ -36,7 +36,7 @@
                 <span>{{tmp.price}}</span>
               </div>
             </div>
-            <btn-box :pname="pname" :index="index" :img_src="img_src" :price="price" :pid="pid"></btn-box>
+            <btn-box :pname="pname" :index="index" :img_src="img_src" :price="price" :pid="pid" ref="firstChild"></btn-box>
           </div>
         </div>
       </li>

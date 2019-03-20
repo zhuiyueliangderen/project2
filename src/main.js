@@ -8,7 +8,7 @@ import Vuex from 'vuex'
 //0.2注册vuex组件
 Vue.use(Vuex)
 //0.3创建store
-var store=new Vuex.Store({
+const store=new Vuex.Store({
   state:{
     cartCount:sessionStorage.getItem("cartCount")||0 //共享数据：购物车中商品数量
   },
@@ -30,6 +30,8 @@ var store=new Vuex.Store({
     }
   }
 })
+/*store.commit('increment');
+console.log(store.state.cartCount);*/
 // 1.引入mint-ui样式文件
 import 'mint-ui/lib/style.css'
 // 2.引入mui库样式文件
@@ -44,6 +46,7 @@ Vue.prototype.axios = axios;
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
