@@ -22,7 +22,7 @@
       </div>
     </header>
     <ul class="index-main">
-      <li class="main-item" v-for="(tmp,index) in myList2" :key="index">
+      <li class="main-item" v-for="(tmp,index) in myList2" :key="index" @click="jumpDetail">
         <div class="item-container">
           <div class="item-left">
             <img :src="'/static/' + tmp.pic_href" ref="pic">
@@ -46,6 +46,8 @@
 </template>
 
 <script>
+//引入Bus.js
+import bus from '../../assets/Bus.js';
 // 注册子组件右侧button部分
 import btn from './indexBtn.vue'
 export default {
@@ -61,7 +63,8 @@ export default {
       index: 0,
       img_src: [],
       price:[],
-      pid:[]
+      pid:[],
+      msg:"测试"
     }
   },
   components: {
@@ -117,7 +120,12 @@ export default {
           }
         }
       }
-      
+    },
+    jumpDetail(e){
+      e.stopPropagation();
+      e.preventDefault();
+      Bus.$emit("myFun",this.msg);
+      console.log(e.target);
     }
   }
 }

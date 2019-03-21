@@ -28,8 +28,21 @@
     </div>
 </template>
 <script>
+import bus from '../../assets/Bus.js';
 export default {
-    
+    data(){
+        return {
+            'text':"内容"
+        }
+    },
+    methods: {
+        
+    },
+    created(){
+        Bus.$on("myFun",(message)=>{
+            this.text=message
+        });
+    }
 }
 </script>
 <style>

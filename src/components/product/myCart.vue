@@ -21,7 +21,7 @@
                                         <span>{{tmp.price}}</span>
                                     </div>
                                 </div>
-                                <cartBtn-box :index="index" :countList="countList"></cartBtn-box>
+                                <cartBtn-box :index="index" :countList="countList" :pname="pname" :img_src="img_src" :price="price" :pid="pid" @cart_list="cart_list"></cartBtn-box>
                             </div>
                         </div>
                     </li>
@@ -35,10 +35,16 @@ import cartBtn from './cartBtn.vue'
 export default {
     data () {
         return {
+            name: "myCart",
             id: 0,
             cartList: [],
             handleShow: true,
-            countList: []
+            countList: [],
+            pname: [],
+            //index: 0,
+            img_src: [],
+            price:[],
+            pid:[]
         }
     },
     components:{
@@ -65,6 +71,10 @@ export default {
                     for(var i=0;i<rows.length;i++){
                         sum+=rows[i].count;
                         this.countList.push(rows[i].count);
+                        this.pname.push(rows[i].pname);
+                        this.img_src.push(rows[i].pic_href);
+                        this.price.push(rows[i].price);
+                        this.pid.push(rows[i].pid);
                     }
                     console.log(this.countList);
                     //修改全局购物车数量

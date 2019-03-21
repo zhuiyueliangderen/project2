@@ -10,32 +10,78 @@
     </div>
 </template>
 <script>
+import {Toast} from 'mint-ui'
 export default {
     data(){
         return {
-            //count: 1
+            id:0
         }
     },
-    props: ["index","countList"],
+    props: ["index","countList","pname","img_src","price","pid"],
     methods:{
         addCount (e) {
             var span=e.target.parentElement.previousElementSibling;
             span.innerHTML++;
+            this.id=sessionStorage.getItem("id");
+            if(this.id){
+                var url="http://127.0.0.1:3000/addcart";
+                this.axios.get(url,
+                {
+                    params:{
+                        pid:this.pid[this.index],
+                        pname:this.pname[this.index],
+                        pic_href:this.img_src[this.index],
+                        price:this.price[this.index],
+                        count:1,
+                        uid:this.id
+                    }
+                }).then((result)=>{
+                    //console.log(result);
+                    this.clickShow = false;
+                    Toast("添加成功！");
+                    this.$store.commit('increment',this.count);
+                    return;
+                });
+            }
         },
         minusCount (e) {
+            this.id=sessionStorage.getItem("id");
             var span=e.target.parentElement.nextElementSibling;
             if (span.innerHTML > 1) {
                 span.innerHTML--
-                
+                var url="http://127.0.0.1:3000/updateCart";
+                this.axios.get(url,{
+                    params:{
+                        pid:this.pid[this.index],
+                        uid:this.id
+                    }
+                }).then((result)=>{
+                    var code=result.data.code;
+                    if(code==1){
+                        Toast("修改成功！");
+                    }
+                    this.$emit('cart_list');
+                });
             } else {
-                span.innerHTML = 1
+                alert("确定删除吗？");
+                var url="http://127.0.0.1:3000/updateCart";
+                this.axios.get(url,{
+                    params:{
+                        pid:this.pid[this.index],
+                        uid:this.id
+                    }
+                }).then((result)=>{
+                    var code=result.data.code;
+                    if(code==1){
+                        Toast("删除成功！");
+                    }
+                    this.$emit('cart_list');
+                });
+                //span.innerHTML = 1
             }
         }
     },
     created(){
-        //this.count=countList[index];
-        //console.log(this.index);
-        //console.log(this.countList);
     }
 }
 </script>

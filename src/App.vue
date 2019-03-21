@@ -15,10 +15,14 @@
         </span>
         <span class="mui-tab-label">购物车</span>
       </router-link>
-      <router-link to="/Login" class="mui-tab-item" href="#tabbar-with-map">
+      <!--<router-link to="/Login" class="mui-tab-item" href="#tabbar-with-map">
         <span class="mui-icon mui-icon-contact"></span>
         <span class="mui-tab-label">我的</span>
-      </router-link>
+      </router-link>-->
+      <a class="mui-tab-item" href="#tabbar-with-map" @click="jumpMy">
+        <span class="mui-icon mui-icon-contact"></span>
+        <span class="mui-tab-label">我的</span>
+      </a>
     </nav>
   </div>
 </template>
@@ -38,9 +42,15 @@ export default {
       } else {
         this.footerShow = true;
       }
-      if (this.$route.path === '/' || this.$route.path === '/Home') {
+      if (this.$route.path === '/' || this.$route.path === '/Mycart'||this.$route.path === '/Home') {
         this.footerShow = true;
       }
+    }
+  },
+  methods:{
+    jumpMy(e){
+      e.preventDefault();
+      this.$router.push("/Login");
     }
   }
 }
